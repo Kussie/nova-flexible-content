@@ -10,21 +10,25 @@
 
             <div
                 v-if="order.length > 0">
-                <form-nova-flexible-content-group
-                    v-for="(group, index) in orderedGroups"
-                    :dusk="field.attribute + '-' + index"
-                    :key="group.key"
-                    :field="field"
-                    :group="group"
-                    :index="index"
-                    :resource-name="resourceName"
-                    :resource-id="resourceId"
-                    :resource="resource"
-                    :errors="errors"
-                    @move-up="moveUp(group.key)"
-                    @move-down="moveDown(group.key)"
-                    @remove="remove(group.key)"
-                />
+                <draggable v-model="order">
+                  <transition-group>
+                    <form-nova-flexible-content-group
+                        v-for="(group, index) in orderedGroups"
+                        :dusk="field.attribute + '-' + index"
+                        :key="group.key"
+                        :field="field"
+                        :group="group"
+                        :index="index"
+                        :resource-name="resourceName"
+                        :resource-id="resourceId"
+                        :resource="resource"
+                        :errors="errors"
+                        @move-up="moveUp(group.key)"
+                        @move-down="moveDown(group.key)"
+                        @remove="remove(group.key)"
+                    />
+                  </transition-group>
+                </draggable>
             </div>
 
             <component
@@ -47,6 +51,7 @@
 
 import FullWidthField from './FullWidthField';
 import { FormField, HandlesValidationErrors } from 'laravel-nova';
+import draggable from 'vuedraggable';
 import Group from '../group';
 
 export default {
@@ -54,7 +59,7 @@ export default {
 
     props: ['resourceName', 'resourceId', 'resource', 'field'],
 
-    components: { FullWidthField },
+    components: { FullWidthField, draggable },
 
     computed: {
         layouts() {
